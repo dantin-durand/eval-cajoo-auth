@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 
-import {Text, View} from 'react-native';
+import {
+  Text,
+  View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 
 import styles from './phone.style';
 
@@ -19,31 +25,37 @@ export default function Phone() {
     value.match(regex.phone) ? setIsNotValid(false) : setIsNotValid(true);
   };
   return (
-    <Container>
-      <Header>Connexion</Header>
-      <View style={styles.header}>
-        <Paragraph>Quel est votre numéro ?</Paragraph>
-        <Text style={styles.paragraph}>
-          Pour que notre livreur puisse vous contacter 😀
-        </Text>
-      </View>
-      <PhoneInput phone={phone} setPhone={handdlePhone} />
-      <View style={styles.actions}>
-        <Text style={styles.conditionsText}>
-          En cliquant sur "CONTINUER", vous acceptez la{' '}
-          <Text style={styles.link}>Politique de Confidentialité</Text>, les{' '}
-          <Text style={styles.link}>CGU</Text> et les{' '}
-          <Text style={styles.link}>CGV</Text> de Cajoo.
-        </Text>
-        <PrimaryButton
-          isDesabled={isNotValid}
-          disabled={isNotValid}
-          onPress={() =>
-            navigation.navigate('confirmationCode', {phone: phone})
-          }>
-          Continuer
-        </PrimaryButton>
-      </View>
-    </Container>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Container>
+          <Header>Connexion</Header>
+          <View style={styles.header}>
+            <Paragraph>Quel est votre numéro ?</Paragraph>
+            <Text style={styles.paragraph}>
+              Pour que notre livreur puisse vous contacter 😀
+            </Text>
+          </View>
+          <PhoneInput phone={phone} setPhone={handdlePhone} />
+          <View style={styles.actions}>
+            <Text style={styles.conditionsText}>
+              En cliquant sur "CONTINUER", vous acceptez la{' '}
+              <Text style={styles.link}>Politique de Confidentialité</Text>, les{' '}
+              <Text style={styles.link}>CGU</Text> et les{' '}
+              <Text style={styles.link}>CGV</Text> de Cajoo.
+            </Text>
+            <PrimaryButton
+              isDesabled={isNotValid}
+              disabled={isNotValid}
+              onPress={() =>
+                navigation.navigate('confirmationCode', {phone: phone})
+              }>
+              Continuer
+            </PrimaryButton>
+          </View>
+        </Container>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }

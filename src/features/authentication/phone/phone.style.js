@@ -4,6 +4,9 @@ import {StyleSheet} from 'react-native';
 import colors from '../../../themes/colors.config';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   header: {
     marginBottom: 20,
     alignItems: 'center',
