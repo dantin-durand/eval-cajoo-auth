@@ -1,10 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Login from '../features/authentication/login/login.page';
-import Landing from '../features/landing/landing.page';
-import Phone from '../features/authentication/phone/phone.page';
-import ConfirmationCode from '../features/authentication/confirmation_code/confirmationCode.page';
+import Login from '../features/authentication/login/login.screen';
+import Landing from '../features/landing/landing.screen';
+import Phone from '../features/authentication/phone/phone.screen';
+import ConfirmationCode from '../features/authentication/confirmation_code/confirmationCode.screen';
 
 const Stack = createNativeStackNavigator();
 
