@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
+import {Auth} from 'aws-amplify';
 
 import {
   Text,
@@ -7,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 
 import styles from './phone.style';
@@ -24,6 +26,49 @@ export default function Phone() {
     setPhone(value);
     value.match(regex.phone) ? setIsNotValid(false) : setIsNotValid(true);
   };
+
+  const login = async () => {
+    const formatedPhone = `+33${phone.substring(1)}`;
+
+    try {
+      const {user} = await Auth.signUp({
+        username: formatedPhone,
+        password: `${Date.now()}`,
+      });
+      navigation.navigate('confirmationCode', {
+        phone: user.username,
+        alreadyExist: false,
+      });
+    } catch (error) {
+      if (error.name === 'UsernameExistsException') {
+        Auth.forgotPassword(formatedPhone)
+          .then(data => {
+            console.log('Forgot password: ', data);
+            navigation.navigate('confirmationCode', {
+              phone: formatedPhone,
+              alreadyExist: true,
+            });
+          })
+          .catch(err => {
+            Alert.alert('Erreur', err.message, [
+              {
+                text: 'Fermer',
+                style: 'cancel',
+              },
+            ]);
+          });
+      } else {
+        console.log(error);
+        Alert.alert('Erreur', error.message, [
+          {
+            text: 'Fermer',
+            style: 'cancel',
+          },
+        ]);
+      }
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -37,7 +82,7 @@ export default function Phone() {
               Pour que notre livreur puisse vous contacter 😀
             </Text>
           </View>
-          <PhoneInput phone={phone} setPhone={handdlePhone} />
+          <PhoneInput phone={phone} setPhone={handdlePhone} autoFocus={true} />
           <View style={styles.actions}>
             <Text style={styles.conditionsText}>
               En cliquant sur "CONTINUER", vous acceptez la{' '}
@@ -48,9 +93,7 @@ export default function Phone() {
             <PrimaryButton
               isDesabled={isNotValid}
               disabled={isNotValid}
-              onPress={() =>
-                navigation.navigate('confirmationCode', {phone: phone})
-              }>
+              onPress={() => login()}>
               Continuer
             </PrimaryButton>
           </View>

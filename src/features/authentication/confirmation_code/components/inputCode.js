@@ -11,6 +11,8 @@ export default function InputCode({code, setCode, position, ...props}) {
       <CodeItem code={code[1]} />
       <CodeItem code={code[2]} />
       <CodeItem code={code[3]} />
+      <CodeItem code={code[4]} />
+      <CodeItem code={code[5]} />
       <TextInput
         keyboardType="number-pad"
         style={styles.input}

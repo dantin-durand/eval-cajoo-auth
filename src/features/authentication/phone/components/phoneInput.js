@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import colors from '../../../../themes/colors.config';
 
-export default function PhoneInput({phone, setPhone}) {
+export default function PhoneInput({phone, setPhone, ...props}) {
   const [isFocused, setIsFocused] = useState(false);
   return (
     <View style={[styles.container, styles.focus(isFocused)]}>
@@ -25,6 +25,7 @@ export default function PhoneInput({phone, setPhone}) {
         onBlur={() => setIsFocused(false)}
         style={styles.input}
         value={phone}
+        {...props}
       />
     </View>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Dimensions, StyleSheet} from 'react-native';
-import colors from '../../../themes/colors.config';
+import colors from '../../themes/colors.config';
 
 const {width} = Dimensions.get('window');
 
@@ -24,13 +24,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Medium',
     fontSize: 12,
     textAlign: 'center',
-    alignItems: 'center',
     marginTop: 20,
-  },
-  linkAction: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: -4,
   },
   link: {
     color: colors.red,
